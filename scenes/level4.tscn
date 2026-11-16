@@ -1,0 +1,305 @@
+[gd_scene format=3 uid="uid://c7eqq7p84jwkj"]
+
+[ext_resource type="Script" uid="uid://dpoluwq7ncqcx" path="res://main.gd" id="1_bvvno"]
+[ext_resource type="Texture2D" uid="uid://82mppcathyxx" path="res://assets/level4background.jpeg" id="2_vxn4p"]
+[ext_resource type="Script" uid="uid://n8s8lrxd18a4" path="res://scripts/ground.gd" id="3_yxclo"]
+[ext_resource type="Script" uid="uid://cng4630og3v3y" path="res://scripts/ball.gd" id="4_fx4lf"]
+[ext_resource type="Texture2D" uid="uid://dgbcx7elcus2k" path="res://assets/basketball.png" id="5_sx4db"]
+[ext_resource type="PackedScene" uid="uid://b1431svmngi12" path="res://scenes/Reflector.tscn" id="6_7lf1v"]
+[ext_resource type="PackedScene" uid="uid://cuv74afbsv1o4" path="res://scenes/Target.tscn" id="7_dguho"]
+[ext_resource type="PackedScene" path="res://scenes/GiantMushroom.tscn" id="8_giant"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cel1a"]
+size = Vector2(1280, 40)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gybmo"]
+friction = 0.1
+bounce = 0.6
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_82g8n"]
+radius = 15.0
+
+[node name="Main" type="Node2D" unique_id=298584520]
+script = ExtResource("1_bvvno")
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1111885529]
+z_index = -10
+texture_filter = 2
+position = Vector2(640, 360)
+scale = Vector2(0.67, 0.67)
+texture = ExtResource("2_vxn4p")
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1858193374]
+position = Vector2(640, 630)
+script = ExtResource("3_yxclo")
+is_mushroom_forest = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1328183106]
+shape = SubResource("RectangleShape2D_cel1a")
+
+[node name="Ball" type="RigidBody2D" parent="." unique_id=1202270817]
+position = Vector2(150, 450)
+physics_material_override = SubResource("PhysicsMaterial_gybmo")
+script = ExtResource("4_fx4lf")
+
+[node name="Sprite2D" type="Sprite2D" parent="Ball" unique_id=494148480]
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("5_sx4db")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=1731130671]
+shape = SubResource("CircleShape2D_82g8n")
+
+[node name="Reflector" parent="." unique_id=343632234 instance=ExtResource("6_7lf1v")]
+position = Vector2(555, 575.99994)
+rotation = -0.3874673
+is_mushroom = true
+
+[node name="Reflector4" parent="." unique_id=57629152 instance=ExtResource("6_7lf1v")]
+position = Vector2(509.00006, 326.00003)
+rotation = 1.9855002
+is_mushroom = true
+
+[node name="Reflector3" parent="." unique_id=53980075 instance=ExtResource("6_7lf1v")]
+position = Vector2(736, 214)
+rotation = 2.3967433
+is_mushroom = true
+
+[node name="Reflector2" parent="." unique_id=553835696 instance=ExtResource("6_7lf1v")]
+position = Vector2(866, 453.00006)
+rotation = -0.3874673
+is_mushroom = true
+
+[node name="GiantMushroom" parent="." unique_id=984512367 instance=ExtResource("8_giant")]
+position = Vector2(1115, 235)
+rotation = -0.46949357
+
+[node name="Target" parent="." unique_id=655781246 instance=ExtResource("7_dguho")]
+position = Vector2(1150, 489)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Target" unique_id=2096489923]
+layer = 2
+
+[node name="Overlay" type="ColorRect" parent="Target/CanvasLayer" unique_id=1297783110]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="CenterContainer" type="CenterContainer" parent="Target/CanvasLayer/Overlay" unique_id=1495529028]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Target/CanvasLayer/Overlay/CenterContainer" unique_id=1583270523]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer" unique_id=1807134162]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="StarLabel" type="Label" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1704177607]
+layout_mode = 2
+theme_type_variation = &"StarsLabel"
+text = "★★★"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1575610407]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+text = "BÖLÜM TAMAM!"
+horizontal_alignment = 1
+
+[node name="ShotsLabel" type="Label" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=934588355]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "0 hamlede bitirdin"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=554262051]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=708125768]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer/Buttons" unique_id=1419121959]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "TEKRAR"
+
+[node name="MenuButton" type="Button" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer/Buttons" unique_id=1948572341]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "MENÜ"
+
+[node name="NextButton" type="Button" parent="Target/CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer/Buttons" unique_id=1007464747]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+text = "SONRAKİ"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1157488910]
+
+[node name="PauseButton" type="Button" parent="CanvasLayer" unique_id=1839204114]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -82.0
+offset_top = 20.0
+offset_right = -24.0
+offset_bottom = 76.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+
+[node name="HudPanel" type="PanelContainer" parent="CanvasLayer" unique_id=432609730]
+offset_left = 24.0
+offset_top = 20.0
+offset_right = 64.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme_type_variation = &"HudPanel"
+
+[node name="HBox" type="HBoxContainer" parent="CanvasLayer/HudPanel" unique_id=476556050]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="BallIcon" type="TextureRect" parent="CanvasLayer/HudPanel/HBox" unique_id=1148520990]
+texture_filter = 1
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("5_sx4db")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ShotCounterLabel" type="Label" parent="CanvasLayer/HudPanel/HBox" unique_id=1403880627]
+layout_mode = 2
+theme_type_variation = &"HudLabel"
+text = "HAMLE: 0"
+vertical_alignment = 1
+
+[node name="Overlay" type="ColorRect" parent="CanvasLayer" unique_id=643649276]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Overlay" unique_id=1752695563]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/Overlay/CenterContainer" unique_id=1481945958]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer" unique_id=1454086253]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="GameOverTitle" type="Label" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=345494903]
+layout_mode = 2
+theme_type_variation = &"GameOverTitle"
+text = "OYUN BİTTİ"
+horizontal_alignment = 1
+
+[node name="SubLabel" type="Label" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=146477870]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "Top sahadan çıktı!"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1143657056]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+
+[node name="TryAgainButton" type="Button" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=304012633]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+text = "TEKRAR DENE"
+
+[node name="MenuButton" type="Button" parent="CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1592837465]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "ANA MENÜ"
+
+[node name="PauseOverlay" type="ColorRect" parent="CanvasLayer" unique_id=1928374650]
+process_mode = 3
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/PauseOverlay" unique_id=1928374651]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="CanvasLayer/PauseOverlay/CenterContainer" unique_id=1928374652]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer" unique_id=1928374653]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PauseTitle" type="Label" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1928374654]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+theme_override_colors/font_color = Color(1, 0.824, 0.247, 1)
+text = "DURAKLATILDI"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1928374655]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="ResumeButton" type="Button" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1928374656]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "DEVAM ET"
+
+[node name="RestartButton" type="Button" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1928374657]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "YENİDEN BAŞLAT"
+
+[node name="MenuButton" type="Button" parent="CanvasLayer/PauseOverlay/CenterContainer/PanelContainer/VBoxContainer" unique_id=1928374658]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "ANA MENÜ"

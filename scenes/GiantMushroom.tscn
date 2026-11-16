@@ -1,0 +1,17 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/giant_mushroom.gd" id="1_gm"]
+
+[node name="GiantMushroom" type="StaticBody2D"]
+script = ExtResource("1_gm")
+
+[node name="CapCollider" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-165, 8, -156, -24, -118, -68, -58, -98, 0, -108, 58, -98, 118, -68, 156, -24, 165, 8)
+
+[node name="StemBody" type="StaticBody2D" parent="."]
+
+[node name="UnderCapCollider" type="CollisionPolygon2D" parent="StemBody"]
+polygon = PackedVector2Array(-165, 8, 165, 8, 165, 14, 125, 24, 0, 28, -125, 24, -165, 14)
+
+[node name="StemCollider" type="CollisionPolygon2D" parent="StemBody"]
+polygon = PackedVector2Array(-32, 18, 36, 18, 85, 130, 175, 290, 110, 290, 28, 145)

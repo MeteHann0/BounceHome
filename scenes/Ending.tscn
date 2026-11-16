@@ -1,0 +1,147 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/ending.gd" id="1_ending"]
+[ext_resource type="Script" path="res://scripts/black_hole_visual.gd" id="2_hole"]
+[ext_resource type="Texture2D" uid="uid://dgbcx7elcus2k" path="res://assets/basketball.png" id="3_ball"]
+
+[node name="Ending" type="Node2D"]
+script = ExtResource("1_ending")
+
+[node name="BlackHole" type="Node2D" parent="."]
+position = Vector2(230, 210)
+script = ExtResource("2_hole")
+
+[node name="DadBall" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(686, 307)
+scale = Vector2(0.22, 0.22)
+texture = ExtResource("3_ball")
+
+[node name="MomBall" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(594, 310)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_ball")
+
+[node name="Ball" type="Sprite2D" parent="."]
+position = Vector2(638, 321)
+scale = Vector2(0.17, 0.17)
+texture = ExtResource("3_ball")
+
+[node name="SiblingBall" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(662, 343)
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("3_ball")
+
+[node name="OverlayDrawer" type="Node2D" parent="."]
+z_index = 5
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="CaptionBox" type="MarginContainer" parent="UI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -170.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/margin_bottom = 40
+
+[node name="Center" type="CenterContainer" parent="UI/CaptionBox"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/CaptionBox/Center"]
+custom_minimum_size = Vector2(880, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_type_variation = &"CaptionPanel"
+
+[node name="Caption" type="Label" parent="UI/CaptionBox/Center/Panel"]
+custom_minimum_size = Vector2(820, 0)
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="CreditsScreen" type="ColorRect" parent="UI"]
+visible = false
+clip_contents = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="CreditsRoll" type="VBoxContainer" parent="UI/CreditsScreen"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 730.0
+offset_right = 1080.0
+offset_bottom = 1350.0
+mouse_filter = 2
+theme_override_constants/separation = 28
+
+[node name="CreditsTitle" type="Label" parent="UI/CreditsScreen/CreditsRoll"]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+theme_override_colors/font_color = Color(1, 0.824, 0.28, 1)
+theme_override_font_sizes/font_size = 38
+text = "BOUNCE HOME"
+horizontal_alignment = 1
+
+[node name="CreditsBody" type="Label" parent="UI/CreditsScreen/CreditsRoll"]
+custom_minimum_size = Vector2(860, 0)
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+theme_override_colors/font_color = Color(0.96, 0.94, 0.9, 1)
+theme_override_constants/line_spacing = 8
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CreditsAuthor" type="Label" parent="UI/CreditsScreen/CreditsRoll"]
+layout_mode = 2
+theme_type_variation = &"CaptionLabel"
+theme_override_colors/font_color = Color(1, 0.824, 0.28, 0.95)
+theme_override_font_sizes/font_size = 26
+text = "— Metehan Çetiner —"
+horizontal_alignment = 1
+
+[node name="SkipButton" type="Button" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -165.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 78.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "GEÇ"
+
+[node name="Flash" type="ColorRect" parent="UI"]
+modulate = Color(1, 0.94, 0.8, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Fade" type="ColorRect" parent="UI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

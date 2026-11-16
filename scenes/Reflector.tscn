@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://b1431svmngi12"]
+
+[ext_resource type="Script" uid="uid://dhycduom68u63" path="res://scripts/reflector.gd" id="1_2cbyo"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_1bvp3"]
+friction = 0.1
+bounce = 0.75
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cel1a"]
+size = Vector2(140, 12)
+
+[node name="Reflector" type="StaticBody2D" unique_id=343632234]
+physics_material_override = SubResource("PhysicsMaterial_1bvp3")
+script = ExtResource("1_2cbyo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=857126325]
+shape = SubResource("RectangleShape2D_cel1a")

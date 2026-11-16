@@ -1,0 +1,407 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_menu"]
+[ext_resource type="Texture2D" uid="uid://b05bjkb5ogd5h" path="res://assets/mainmenu-background.png" id="2_bg"]
+[ext_resource type="Texture2D" uid="uid://dgbcx7elcus2k" path="res://assets/basketball.png" id="3_ball"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="Background" type="TextureRect" parent="."]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Tint" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.06, 0.1, 0.2, 0.3)
+
+[node name="Home" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBox" type="VBoxContainer" parent="Home"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="Home/VBox"]
+layout_mode = 2
+theme_type_variation = &"MenuTitle"
+text = "BOUNCE HOME"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Home/VBox"]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "A little ball's journey back home"
+horizontal_alignment = 1
+
+[node name="BallHolder" type="Control" parent="Home/VBox"]
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Ball" type="TextureRect" parent="Home/VBox/BallHolder"]
+texture_filter = 2
+layout_mode = 0
+offset_right = 84.0
+offset_bottom = 84.0
+mouse_filter = 2
+texture = ExtResource("3_ball")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ProgressLabel" type="Label" parent="Home/VBox"]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "12 worlds await you"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Home/VBox"]
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="StartButton" type="Button" parent="Home/VBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 28
+text = "PLAY"
+
+[node name="LevelsButton" type="Button" parent="Home/VBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "LEVELS"
+
+[node name="SettingsButton" type="Button" parent="Home/VBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "SETTINGS"
+
+[node name="QuitButton" type="Button" parent="Home/VBox"]
+custom_minimum_size = Vector2(320, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "QUIT"
+
+[node name="LangButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -184.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 78.0
+grow_horizontal = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "LANG: EN"
+
+[node name="InfoButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -78.0
+offset_right = 82.0
+offset_bottom = -24.0
+grow_vertical = 0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+theme_override_font_sizes/font_size = 26
+text = "i"
+
+[node name="LevelsOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="Center" type="CenterContainer" parent="LevelsOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="LevelsOverlay/Center"]
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="LevelsOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="LevelsOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+theme_override_colors/font_color = Color(1, 0.6, 0.18, 1)
+text = "LEVELS"
+horizontal_alignment = 1
+
+[node name="Summary" type="Label" parent="LevelsOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "0 / 12 levels completed"
+horizontal_alignment = 1
+
+[node name="Grid" type="GridContainer" parent="LevelsOverlay/Center/Panel/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 4
+
+[node name="BackButton" type="Button" parent="LevelsOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "BACK"
+
+[node name="SettingsOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="Center" type="CenterContainer" parent="SettingsOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="SettingsOverlay/Center"]
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="SettingsOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="SettingsOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+theme_override_colors/font_color = Color(1, 0.6, 0.18, 1)
+text = "SETTINGS"
+horizontal_alignment = 1
+
+[node name="VolumeBox" type="VBoxContainer" parent="SettingsOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="SettingsOverlay/Center/Panel/VBox/VolumeBox"]
+layout_mode = 2
+
+[node name="VolumeLabel" type="Label" parent="SettingsOverlay/Center/Panel/VBox/VolumeBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "VOLUME"
+
+[node name="VolumeValue" type="Label" parent="SettingsOverlay/Center/Panel/VBox/VolumeBox/Header"]
+layout_mode = 2
+text = "100%"
+horizontal_alignment = 2
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsOverlay/Center/Panel/VBox/VolumeBox"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Spacer" type="Control" parent="SettingsOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="SettingsOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "BACK"
+
+[node name="InfoOverlay" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.06, 0.1, 0.2, 0.45)
+
+[node name="Center" type="CenterContainer" parent="InfoOverlay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="InfoOverlay/Center"]
+custom_minimum_size = Vector2(540, 0)
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="InfoOverlay/Center/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"WinTitle"
+theme_override_colors/font_color = Color(1, 0.6, 0.18, 1)
+text = "ABOUT & GUIDE"
+horizontal_alignment = 1
+
+[node name="HowToTitle" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.824, 0.247, 1)
+text = "HOW TO PLAY"
+horizontal_alignment = 1
+
+[node name="HowToDesc" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "Drag from the ball to aim, release to launch, and enter the black hole!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="StarsTitle" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.824, 0.247, 1)
+text = "STAR SYSTEM"
+horizontal_alignment = 1
+
+[node name="StarsRules" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+text = "★★★   1–2 moves
+★★☆   3 moves
+★☆☆   4+ moves"
+horizontal_alignment = 1
+
+[node name="ReplayButton" type="Button" parent="InfoOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(280, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_type_variation = &"WoodButton"
+text = "REPLAY STORY"
+
+[node name="Spacer" type="Control" parent="InfoOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+
+[node name="DeveloperRow" type="HBoxContainer" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="DeveloperLabel" type="Label" parent="InfoOverlay/Center/Panel/VBox/DeveloperRow"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "Developer: Metehan Çetiner"
+horizontal_alignment = 1
+
+[node name="LinkedInButton" type="Button" parent="InfoOverlay/Center/Panel/VBox/DeveloperRow"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "www.linkedin.com/in/metehancetiner"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="GitHubButton" type="Button" parent="InfoOverlay/Center/Panel/VBox/DeveloperRow"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "https://github.com/MeteHann0"
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="VersionLabel" type="Label" parent="InfoOverlay/Center/Panel/VBox"]
+layout_mode = 2
+theme_type_variation = &"SubLabel"
+theme_override_font_sizes/font_size = 15
+text = "Version: v1.0.0   •   Made with Godot Engine"
+horizontal_alignment = 1
+
+[node name="BackButton" type="Button" parent="InfoOverlay/Center/Panel/VBox"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "BACK"
+
+[node name="Fade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
