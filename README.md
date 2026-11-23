@@ -60,6 +60,24 @@ Talihsiz bir şekilde bir kara delik tarafından yutulan küçük bir top, kendi
 
 ---
 
+
+## 📥 Download & Play / İndir ve Oyna (Windows)
+
+> **🇬🇧 No Godot Engine required!** To play the game directly on Windows:
+> 1. Go to the **[Releases (v1.0.0)](https://github.com/MeteHann0/BounceHome/releases/latest)** page.
+> 2. Download **`BounceHome_Game.zip`** under the **Assets** section.
+> 3. Extract the `.zip` archive into a folder (make sure `Bounce Home.exe` and `Bounce Home.pck` stay together in the same folder).
+> 4. Double-click **`Bounce Home.exe`** and enjoy!
+
+> **🇹🇷 Bilgisayarınızda Godot yüklü olmasına gerek yoktur!** Oyunu doğrudan indirip oynamak için:
+> 1. Sağ taraftaki veya buradaki **[Releases (v1.0.0)](https://github.com/MeteHann0/BounceHome/releases/latest)** sayfasına gidin.
+> 2. **Assets** altındaki **`BounceHome_Game.zip`** dosyasına tıklayarak indirin.
+> 3. İndirdiğiniz `.zip` dosyasını bir klasöre çıkartın (`Bounce Home.exe` ve `Bounce Home.pck` dosyalarının aynı klasörde yan yana durduğundan emin olun).
+> 4. **`Bounce Home.exe`** dosyasına çift tıklayarak oyuna başlayın!
+
+
+---
+
 ### 👨‍💻 Developer / Geliştirici
 - **Metehan Çetiner**
 - [LinkedIn](https://www.linkedin.com/in/metehancetiner) • [GitHub](https://github.com/MeteHann0)
