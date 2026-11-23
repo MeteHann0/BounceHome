@@ -1,13 +1,10 @@
 extends Node2D
-## Oyunun açılış hikayesi ve oynanış tanıtım videosu.
-## Top kendi evreninde süzülür -> kara delik onu yutar -> yeni bir dünyaya düşer ->
-## ardından seçili dile göre (TR / EN) oynanış tanıtım videosu oynar -> ana menü açılır.
+## Oyunun açılış hikayesi.
+## Top kendi evreninde süzülür -> kara delik onu yutar -> yeni bir dünyaya düşer -> ana menü açılır.
 ## Sadece ilk açılışta oynatılır (GameProgress içinde saklanır).
 
 const GameProgress := preload("res://scripts/game_progress.gd")
 const SoundManager := preload("res://scripts/sound_manager.gd")
-const INTRO_VIDEO_TR := preload("res://assets/Introduction-TR.ogv")
-const INTRO_VIDEO_EN := preload("res://assets/Introduction-ENG.ogv")
 
 ## Daktilo efektinde harf başına süre (saniye)
 const CHAR_TIME := 0.045
@@ -24,8 +21,6 @@ const SCREEN_SIZE := Vector2(1280, 720)
 @onready var black_hole = $BlackHole
 @onready var caption_box: Control = $UI/CaptionBox
 @onready var caption: Label = $UI/CaptionBox/Center/Panel/Caption
-@onready var video_overlay: ColorRect = $UI/VideoOverlay
-@onready var video_player: VideoStreamPlayer = $UI/VideoOverlay/VideoPlayer
 @onready var skip_button: Button = $UI/SkipButton
 @onready var flash_rect: ColorRect = $UI/Flash
 @onready var fade_rect: ColorRect = $UI/Fade
@@ -38,7 +33,6 @@ var ball_floating := true
 var ball_scale := Vector2.ONE
 var typing := false
 var typing_tween: Tween
-var video_active := false
 var finishing := false
 
 func _ready():
@@ -55,7 +49,6 @@ func _ready():
 	world.hide()
 	black_hole.hide()
 	black_hole.scale = Vector2.ZERO
-	video_overlay.hide()
 
 	caption.text = ""
 	caption_box.modulate.a = 0.0
@@ -63,8 +56,7 @@ func _ready():
 	fade_rect.modulate.a = 1.0
 
 	skip_button.text = GameProgress.t("skip")
-	skip_button.pressed.connect(_on_skip_pressed)
-	video_player.finished.connect(_on_video_finished)
+	skip_button.pressed.connect(_finish)
 
 	_play()
 
@@ -79,7 +71,7 @@ func _play():
 	await _wait(1.6)
 
 	# 2) Kara delik belirir
-	if video_active or finishing:
+	if finishing:
 		return
 	black_hole.position = HOLE_POS
 	black_hole.show()
@@ -93,14 +85,14 @@ func _play():
 	await _wait(0.4)
 
 	# 3) Top kara deliğe çekilir
-	if video_active or finishing:
+	if finishing:
 		return
 	ball_floating = false
 	black_hole.speed_mult = 3.5
 	await _pull_ball_into_hole()
 
 	# 4) Beyaz parlama -> yeni dünya
-	if video_active or finishing:
+	if finishing:
 		return
 	await _tween_alpha(flash_rect, 1.0, 0.25).finished
 
@@ -128,7 +120,7 @@ func _play():
 	await _wait(1.2)
 
 	# Şaşkınlıkla küçük bir zıplama
-	if video_active or finishing:
+	if finishing:
 		return
 	var hop := create_tween()
 	hop.tween_property(ball, "position:y", BALL_LAND.y - 30, 0.22) \
@@ -141,9 +133,7 @@ func _play():
 	await _type(GameProgress.t("story_3"))
 	await _wait(2.8)
 
-	# 7) Intro animasyonu bittiğinde seçili dile göre tanıtım videosunu başlat
-	if not video_active and not finishing:
-		_start_intro_video()
+	_finish()
 
 func _pull_ball_into_hole():
 	var center: Vector2 = black_hole.position
@@ -167,62 +157,23 @@ func _pull_ball_into_hole():
 
 	await tween.finished
 
-func _on_skip_pressed():
-	if finishing:
-		return
-	if not video_active:
-		_start_intro_video()
-	else:
-		_finish_to_menu()
-
-func _start_intro_video():
-	if video_active or finishing:
-		return
-	video_active = true
-	typing = false
-	if typing_tween and typing_tween.is_valid():
-		typing_tween.kill()
-
-	await _tween_alpha(fade_rect, 1.0, 0.55).finished
-	if finishing:
-		return
-
-	caption_box.hide()
-	world.hide()
-	ball.hide()
-	black_hole.hide()
-	space_visible = false
-	queue_redraw()
-
-	var is_tr := GameProgress.get_lang() == "tr"
-	video_player.stream = INTRO_VIDEO_TR if is_tr else INTRO_VIDEO_EN
-	video_overlay.show()
-	video_player.play()
-
-	await _tween_alpha(fade_rect, 0.0, 0.45).finished
-
-func _on_video_finished():
-	_finish_to_menu()
-
-func _finish_to_menu():
+func _finish():
 	if finishing:
 		return
 
 	finishing = true
 	skip_button.disabled = true
-	if video_player.is_playing():
-		video_player.stop()
 	GameProgress.mark_intro_seen()
 
-	await _tween_alpha(fade_rect, 1.0, 0.7).finished
-	GameProgress.start_level(0)
+	await _tween_alpha(fade_rect, 1.0, 0.8).finished
+	GameProgress.go_to_menu()
 
 # ------------------------------------------------------------
 # Yardımcılar
 # ------------------------------------------------------------
 
 func _type(text: String) -> void:
-	if finishing or video_active:
+	if finishing:
 		return
 
 	caption.text = text
@@ -238,7 +189,7 @@ func _type(text: String) -> void:
 	typing = false
 
 func _wait(seconds: float) -> void:
-	if finishing or video_active:
+	if finishing:
 		return
 	var tween := create_tween()
 	tween.tween_interval(seconds)
@@ -303,25 +254,7 @@ func _draw():
 		var twinkle: float = 0.5 + 0.5 * sin(time * s["speed"] + s["phase"])
 		draw_circle(s["pos"], s["size"], Color(1.0, 0.95, 0.85, 0.3 + 0.7 * twinkle))
 
-	# Topun etrafındaki sıcak ışık ve kenarlarındaki küçük rüzgar/süzülme çizgileri
+	# Topun etrafındaki sıcak ışık
 	if ball_floating:
 		for i in 4:
 			draw_circle(ball.position, 70.0 - i * 12.0, Color("#FFB347", 0.05 + i * 0.03))
-
-		var breeze_lines := [
-			{"y": -28.0, "x_off": -18.0, "len": 22.0, "phase": 0.0},
-			{"y": -16.0, "x_off": -34.0, "len": 16.0, "phase": 0.35},
-			{"y": 16.0, "x_off": -32.0, "len": 18.0, "phase": 0.65},
-			{"y": 28.0, "x_off": -14.0, "len": 20.0, "phase": 0.20},
-			{"y": -22.0, "x_off": 24.0, "len": 17.0, "phase": 0.50},
-			{"y": 22.0, "x_off": 22.0, "len": 19.0, "phase": 0.82},
-		]
-		for b in breeze_lines:
-			var cyc := fmod(time * 1.9 + float(b["phase"]), 1.0)
-			var slide_x := lerpf(14.0, -22.0, cyc)
-			var wave_y := sin(cyc * TAU + float(b["phase"]) * 4.0) * 2.5
-			var alpha := sin(cyc * PI) * 0.65
-			var l_len := float(b["len"]) * (0.6 + 0.4 * sin(cyc * PI))
-			var p1 := ball.position + Vector2(float(b["x_off"]) + slide_x, float(b["y"]) + wave_y)
-			var p2 := p1 + Vector2(-l_len, 0.0)
-			draw_line(p1, p2, Color(1.0, 0.96, 0.88, alpha), 2.0, true)

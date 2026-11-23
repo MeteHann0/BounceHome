@@ -3,6 +3,8 @@ extends Control
 
 const GameProgress := preload("res://scripts/game_progress.gd")
 const SoundManager := preload("res://scripts/sound_manager.gd")
+const INTRO_VIDEO_TR := preload("res://assets/Introduction-TR.ogv")
+const INTRO_VIDEO_EN := preload("res://assets/Introduction-ENG.ogv")
 
 const CARD_SIZE := Vector2(150, 104)
 
@@ -58,6 +60,11 @@ const OUTLINE := Color(0.231, 0.137, 0.078)
 
 var time := 0.0
 var leaving := false
+var _video_overlay: ColorRect = null
+var _video_player: VideoStreamPlayer = null
+var _video_skip_btn: Button = null
+var _pending_level_index: int = 0
+var _video_finishing: bool = false
 
 func _ready():
 	SoundManager.play_menu_music()
@@ -182,7 +189,73 @@ func _start_level(index: int):
 	tween.tween_property(fade_rect, "modulate:a", 1.0, 0.4)
 	await tween.finished
 
+	if not GameProgress.is_tutorial_video_seen():
+		_play_tutorial_video_then_start(index)
+		return
+
 	GameProgress.start_level(index)
+
+func _play_tutorial_video_then_start(index: int):
+	_pending_level_index = index
+	_video_finishing = false
+
+	if not is_instance_valid(_video_overlay):
+		_video_overlay = ColorRect.new()
+		_video_overlay.color = Color.BLACK
+		_video_overlay.position = Vector2.ZERO
+		_video_overlay.size = Vector2(1280, 720)
+		add_child(_video_overlay)
+
+		_video_player = VideoStreamPlayer.new()
+		_video_player.position = Vector2.ZERO
+		_video_player.size = Vector2(1280, 720)
+		_video_player.expand = true
+		_video_player.finished.connect(_finish_tutorial_video)
+		_video_overlay.add_child(_video_player)
+
+		_video_skip_btn = Button.new()
+		_video_skip_btn.theme_type_variation = &"WoodButton"
+		_video_skip_btn.focus_mode = Control.FOCUS_NONE
+		_video_skip_btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		_video_skip_btn.position = Vector2(1280.0 - 150.0, 24.0)
+		_video_skip_btn.size = Vector2(126.0, 54.0)
+		_video_skip_btn.pressed.connect(_finish_tutorial_video)
+		_video_overlay.add_child(_video_skip_btn)
+
+		# Fade her zaman en üstte kalsın
+		move_child(fade_rect, get_child_count() - 1)
+
+	var is_tr := GameProgress.get_lang() == "tr"
+	_video_skip_btn.text = GameProgress.t("skip")
+	_video_skip_btn_enable()
+	_video_player.stream = INTRO_VIDEO_TR if is_tr else INTRO_VIDEO_EN
+	_video_overlay.show()
+	_video_player.play()
+
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var fade_in := create_tween()
+	fade_in.tween_property(fade_rect, "modulate:a", 0.0, 0.4)
+
+func _video_skip_btn_enable():
+	if is_instance_valid(_video_skip_btn):
+		_video_skip_btn.disabled = false
+
+func _finish_tutorial_video():
+	if _video_finishing:
+		return
+	_video_finishing = true
+	if is_instance_valid(_video_skip_btn):
+		_video_skip_btn.disabled = true
+	if is_instance_valid(_video_player) and _video_player.is_playing():
+		_video_player.stop()
+
+	GameProgress.mark_tutorial_video_seen()
+	fade_rect.mouse_filter = Control.MOUSE_FILTER_STOP
+	var fade_out := create_tween()
+	fade_out.tween_property(fade_rect, "modulate:a", 1.0, 0.45)
+	await fade_out.finished
+
+	GameProgress.start_level(_pending_level_index)
 
 # ------------------------------------------------------------
 # Bölüm kataloğu

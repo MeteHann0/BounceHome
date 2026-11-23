@@ -194,6 +194,13 @@ static func mark_intro_seen():
 	_get_config().set_value("progress", "intro_v3_seen", true)
 	_save()
 
+static func is_tutorial_video_seen() -> bool:
+	return _get_config().get_value("progress", "tutorial_video_seen", false)
+
+static func mark_tutorial_video_seen():
+	_get_config().set_value("progress", "tutorial_video_seen", true)
+	_save()
+
 # ------------------------------------------------------------
 # Bölüm bilgileri
 # ------------------------------------------------------------
@@ -282,5 +289,6 @@ static func go_to_ending():
 
 static func replay_intro():
 	_get_config().set_value("progress", "intro_v3_seen", false)
+	_get_config().set_value("progress", "tutorial_video_seen", false)
 	_save()
 	_tree().change_scene_to_file(INTRO_SCENE)
