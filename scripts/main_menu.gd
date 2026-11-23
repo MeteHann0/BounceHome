@@ -395,14 +395,12 @@ func _make_card(index: int) -> Button:
 	# Durum: yıldızlar / OYNA / YAKINDA / kilit
 	if completed:
 		var stars := GameProgress.get_stars(index)
-		var star_label := Label.new()
-		star_label.theme_type_variation = &"StarsLabel"
-		star_label.text = "★".repeat(stars) + "☆".repeat(3 - stars)
-		star_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		star_label.add_theme_font_size_override("font_size", 24)
-		star_label.add_theme_constant_override("outline_size", 7)
-		star_label.add_theme_constant_override("shadow_offset_y", 2)
-		box.add_child(star_label)
+		var star_row := Control.new()
+		star_row.custom_minimum_size = Vector2(96, 28)
+		star_row.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		star_row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		star_row.draw.connect(_draw_card_stars.bind(star_row, stars))
+		box.add_child(star_row)
 	elif not unlocked:
 		var lock := Control.new()
 		lock.custom_minimum_size = Vector2(24, 26)
@@ -459,3 +457,26 @@ func _draw_lock(lock: Control):
 	# Anahtar deliği
 	lock.draw_circle(Vector2(w / 2.0, h * 0.68), 2.5, OUTLINE)
 	lock.draw_rect(Rect2(w / 2.0 - 1.0, h * 0.68, 2.0, h * 0.18), OUTLINE)
+
+func _draw_card_stars(ctrl: Control, earned_stars: int):
+	var cy := ctrl.size.y * 0.5 + 1.0
+	var cx := ctrl.size.x * 0.5
+	var spacing := 28.0
+	for i in range(3):
+		var pos := Vector2(cx + (float(i) - 1.0) * spacing, cy)
+		var filled := i < earned_stars
+		_draw_single_star(ctrl, pos, 10.5, filled)
+
+func _draw_single_star(canvas: CanvasItem, center: Vector2, outer_r: float, filled: bool):
+	var inner_r := outer_r * 0.44
+	var pts := PackedVector2Array()
+	for i in range(10):
+		var ang := -PI * 0.5 + float(i) * (TAU / 10.0)
+		var r := outer_r if i % 2 == 0 else inner_r
+		pts.append(center + Vector2(cos(ang), sin(ang)) * r)
+	pts.append(pts[0])
+
+	var poly := pts.slice(0, 10)
+	var fill_col := Color(1.0, 0.824, 0.247, 1.0) if filled else Color(0.28, 0.22, 0.16, 0.55)
+	canvas.draw_colored_polygon(poly, fill_col)
+	canvas.draw_polyline(pts, OUTLINE, 2.6, true)

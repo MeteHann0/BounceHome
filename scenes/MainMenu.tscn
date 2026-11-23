@@ -385,7 +385,7 @@ mouse_default_cursor_shape = 2
 layout_mode = 2
 theme_type_variation = &"SubLabel"
 theme_override_font_sizes/font_size = 15
-text = "Version: v1.0.0   •   Made with Godot Engine"
+text = "Version: v2.0.0   •   Made with Godot Engine"
 horizontal_alignment = 1
 
 [node name="BackButton" type="Button" parent="InfoOverlay/Center/Panel/VBox"]

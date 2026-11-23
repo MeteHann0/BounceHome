@@ -109,7 +109,7 @@ func _physics_process(_delta: float):
 		return
 
 	# Top henüz fırlatılmadıysa çekim uygulama
-	if int(_main_node.get("shot_count")) <= 0 or _ball.freeze:
+	if int(_main_node.get("shot_count")) <= 0 or not bool(_main_node.get("ball_in_flight")) or _ball.freeze:
 		_pulling_ball = false
 		return
 

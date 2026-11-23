@@ -110,7 +110,10 @@ func _play():
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	await close_hole.finished
 	black_hole.hide()
-	await _wait(0.5)
+
+	if typing and typing_tween and typing_tween.is_valid():
+		await typing_tween.finished
+	await _wait(2.0)
 
 	# 2) Sıcak altın parlama ile binlerce topun bulunduğu ana evren aydınlanır
 	await _tween_alpha(flash_rect, 0.85, 0.25).finished
@@ -123,7 +126,7 @@ func _play():
 	_tween_alpha(flash_rect, 0.0, 0.95)
 
 	await _type(GameProgress.t("ending_1"))
-	await _wait(1.6)
+	await _wait(2.2)
 
 	# 3) Ailesi (Anne, Baba ve küçük kardeş top) sağdan ve soldan sevinçle gelip sarılır
 	family_visible = true
@@ -159,7 +162,9 @@ func _play():
 		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	await hug_tween.finished
 	_spawn_hug_hearts()
-	await _wait(1.6)
+	if typing and typing_tween and typing_tween.is_valid():
+		await typing_tween.finished
+	await _wait(2.2)
 
 	# 4) Final mesajı
 	await _type(GameProgress.t("ending_3"))

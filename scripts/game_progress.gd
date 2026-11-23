@@ -26,14 +26,14 @@ const TEXTS := {
 	"en": {
 		"subtitle": "A little ball's journey back home",
 		"worlds_waiting": "%d worlds await you",
-		"progress_short": "%d / %d levels   •   %d ★",
+		"progress_short": "%d / %d levels   •   %d Stars",
 		"start": "PLAY",
 		"levels": "LEVELS",
 		"settings": "SETTINGS",
 		"quit": "QUIT",
 		"back": "BACK",
 		"sound_volume": "VOLUME",
-		"levels_summary": "%d / %d levels completed   •   %d / %d ★",
+		"levels_summary": "%d / %d levels completed   •   %d / %d Stars",
 		"card_play": "PLAY",
 		"card_soon": "SOON",
 		"skip": "SKIP",
@@ -73,22 +73,22 @@ const TEXTS := {
 		"how_to_play_title": "HOW TO PLAY",
 		"how_to_play_desc": "Drag from the ball to aim, release to launch, and enter the black hole!",
 		"stars_title": "STAR SYSTEM",
-		"stars_rules": "★★★   1–2 moves\n★★☆   3 moves\n★☆☆   4+ moves",
+		"stars_rules": "3 Stars :  1–2 moves\n2 Stars :  3 moves\n1 Star   :  4+ moves",
 		"replay_story": "REPLAY STORY",
 		"credits_dev": "Developer: Metehan Çetiner",
-		"credits_ver": "Version: v1.0.0   •   Made with Godot Engine",
+		"credits_ver": "Version: v2.0.0   •   Made with Godot Engine",
 	},
 	"tr": {
 		"subtitle": "Küçük topun eve dönüş yolculuğu",
 		"worlds_waiting": "%d dünya seni bekliyor",
-		"progress_short": "%d / %d bölüm   •   %d ★",
+		"progress_short": "%d / %d bölüm   •   %d Yıldız",
 		"start": "BAŞLA",
 		"levels": "BÖLÜMLER",
 		"settings": "AYARLAR",
 		"quit": "ÇIKIŞ",
 		"back": "GERİ",
 		"sound_volume": "SES SEVİYESİ",
-		"levels_summary": "%d / %d bölüm tamamlandı   •   %d / %d ★",
+		"levels_summary": "%d / %d bölüm tamamlandı   •   %d / %d Yıldız",
 		"card_play": "OYNA",
 		"card_soon": "YAKINDA",
 		"skip": "GEÇ",
@@ -128,10 +128,10 @@ const TEXTS := {
 		"how_to_play_title": "NASIL OYNANIR?",
 		"how_to_play_desc": "Topu tutup çekerek nişan al, bırakarak fırlat ve kara deliğe ulaş!",
 		"stars_title": "YILDIZ SİSTEMİ",
-		"stars_rules": "★★★   1–2 hamle\n★★☆   3 hamle\n★☆☆   4+ hamle",
+		"stars_rules": "3 Yıldız :  1–2 hamle\n2 Yıldız :  3 hamle\n1 Yıldız :  4+ hamle",
 		"replay_story": "HİKAYEYİ TEKRAR İZLE",
 		"credits_dev": "Geliştirici: Metehan Çetiner",
-		"credits_ver": "Sürüm: v1.0.0   •   Godot Engine ile yapıldı",
+		"credits_ver": "Sürüm: v2.0.0   •   Godot Engine ile yapıldı",
 	},
 }
 
@@ -188,10 +188,10 @@ static func set_volume(value: float):
 # ------------------------------------------------------------
 
 static func is_intro_seen() -> bool:
-	return _get_config().get_value("progress", "intro_seen", false)
+	return _get_config().get_value("progress", "intro_v3_seen", false)
 
 static func mark_intro_seen():
-	_get_config().set_value("progress", "intro_seen", true)
+	_get_config().set_value("progress", "intro_v3_seen", true)
 	_save()
 
 # ------------------------------------------------------------
@@ -281,6 +281,6 @@ static func go_to_ending():
 	_tree().change_scene_to_file(ENDING_SCENE)
 
 static func replay_intro():
-	_get_config().set_value("progress", "intro_seen", false)
+	_get_config().set_value("progress", "intro_v3_seen", false)
 	_save()
 	_tree().change_scene_to_file(INTRO_SCENE)

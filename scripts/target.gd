@@ -25,6 +25,7 @@ var time := 0.0
 var swirl_angle := 0.0
 var flash := 0.0
 var particles: Array = []
+var _earned_stars: int = 3
 
 @onready var completion_panel = $CanvasLayer/Overlay
 @onready var win_title: Label = $CanvasLayer/Overlay/CenterContainer/PanelContainer/VBoxContainer/Title
@@ -52,6 +53,10 @@ func _ready():
 	retry_button.pressed.connect(_on_retry_pressed)
 	menu_button.pressed.connect(GameProgress.go_to_menu)
 	next_button.pressed.connect(_on_next_pressed)
+
+	star_label.text = ""
+	star_label.custom_minimum_size = Vector2(220, 62)
+	star_label.draw.connect(_draw_win_stars)
 
 	for i in particle_count:
 		particles.append(_new_particle(randf_range(14.0, 50.0)))
@@ -97,7 +102,9 @@ func _on_body_entered(body):
 		elif shots == 3:
 			stars = 2
 
-		star_label.text = "★".repeat(stars) + "☆".repeat(3 - stars)
+		_earned_stars = stars
+		star_label.text = ""
+		star_label.queue_redraw()
 		if shots == 1:
 			shots_label.text = GameProgress.t("finished_in_1")
 		else:
@@ -222,6 +229,32 @@ func _draw():
 	# Yutma sonrası ışık dalgası
 	if flash > 0.0 and flash < 1.0:
 		draw_arc(Vector2.ZERO, 14.0 + flash * 50.0, 0, TAU, 64, Color(1, 1, 1, 1.0 - flash), 4.0 * (1.0 - flash) + 1.0)
+
+func _draw_win_stars():
+	var cx: float = star_label.size.x * 0.5
+	var cy: float = star_label.size.y * 0.5
+	var spacing := 62.0
+	var outline_col := Color(0.231, 0.137, 0.078, 1.0)
+
+	for i in range(3):
+		var center := Vector2(cx + (float(i) - 1.0) * spacing, cy)
+		var filled := i < _earned_stars
+		var outer_r := 23.0
+		var inner_r := outer_r * 0.44
+		var pts := PackedVector2Array()
+		var shadow_pts := PackedVector2Array()
+		for p in range(10):
+			var ang := -PI * 0.5 + float(p) * (TAU / 10.0)
+			var r := outer_r if p % 2 == 0 else inner_r
+			var pt := center + Vector2(cos(ang), sin(ang)) * r
+			pts.append(pt)
+			shadow_pts.append(pt + Vector2(0.0, 4.0))
+		pts.append(pts[0])
+
+		star_label.draw_colored_polygon(shadow_pts, Color(0.0, 0.0, 0.0, 0.28))
+		var fill_col := Color(1.0, 0.824, 0.247, 1.0) if filled else Color(0.32, 0.24, 0.18, 0.55)
+		star_label.draw_colored_polygon(pts.slice(0, 10), fill_col)
+		star_label.draw_polyline(pts, outline_col, 4.2, true)
 
 
 
